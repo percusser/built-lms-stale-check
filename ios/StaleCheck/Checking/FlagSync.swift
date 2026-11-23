@@ -17,6 +17,8 @@ enum FlagSync {
             let ref = flags.document("\(flag.fact.id):iphone:\(item.id.uuidString.lowercased().prefix(12))")
             do {
                 if try await ref.getDocument().exists { continue }
+            } catch let error as NSError where error.domain == FirestoreErrorDomain && error.code == FirestoreErrorCode.permissionDenied.rawValue {
+                continue
             } catch {
                 return false
             }

@@ -35,6 +35,7 @@
 		F25EA19C4F66854408FBB1EE /* MessageCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785E2F5571B0753DFB4FAE06 /* MessageCheckTests.swift */; };
 		F7BBC96EEB6A60F7E18465D6 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D397B67EFFCB5A8E690FC819 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FFB54385B0563016B82C0CCE /* ItemResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2130B18FC579FC4413625A18 /* ItemResultView.swift */; };
+		A1C0DE0000000000000000B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C0DE0000000000000000F1 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		D94F9A4B2251FB20B8819B4C /* appcheck-debug-token.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "appcheck-debug-token.txt"; sourceTree = "<group>"; };
 		DAFA516EF1E0433D211DF402 /* StaleCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaleCheckApp.swift; sourceTree = "<group>"; };
 		DBB051B7A5EE7161D4569AEB /* FactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactsView.swift; sourceTree = "<group>"; };
+		A1C0DE0000000000000000F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				CAAFFA35B6464AF7F63FE866 /* AppModel.swift */,
+				A1C0DE0000000000000000F1 /* Assets.xcassets */,
 				DAFA516EF1E0433D211DF402 /* StaleCheckApp.swift */,
 				96D862C886623333BD9BC790 /* Checking */,
 				A325B8FACB905EDC25835163 /* Model */,
@@ -376,6 +379,7 @@
 			files = (
 				77053D11D77294255A65E5B4 /* GoogleService-Info.plist in Resources */,
 				BFADA647C1C09E77F2DCB29E /* appcheck-debug-token.txt in Resources */,
+				A1C0DE0000000000000000B1 /* Assets.xcassets in Resources */,
 				28057D9A00A46CFB33F2FE35 /* check-message.md in Resources */,
 				D7E1C43AF015C02D60471D1B /* course.json in Resources */,
 				AA089DB9BC9BBF4CCF8FB5D6 /* facts.golden.json in Resources */,
@@ -515,7 +519,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -575,6 +579,9 @@
 				DEVELOPMENT_TEAM = D48Q5GC2K9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Stale Check";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				EXCLUDED_SOURCE_FILE_NAMES = "appcheck-debug-token.txt";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -639,7 +646,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -675,6 +682,8 @@
 				DEVELOPMENT_TEAM = D48Q5GC2K9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Stale Check";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (

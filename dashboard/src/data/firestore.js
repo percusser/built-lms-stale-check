@@ -2,6 +2,7 @@ import { renderPrompt } from '@stale-check/shared';
 import { createFirebaseModel } from '@stale-check/shared/firebase-model';
 import draftFixTemplate from '@stale-check/shared/prompts/draft-fix.md';
 import draftFixSchema from '@stale-check/shared/schemas/draft-fix.response.schema.json';
+import { getAuth } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, getFirestore, onSnapshot, updateDoc } from 'firebase/firestore';
 import { fact, moduleBlocks } from '../course.js';
 import { org } from './sample.js';
@@ -74,6 +75,7 @@ export function createFirestoreBackend(app) {
       await updateDoc(doc(flags, flagId), {
         status: 'approved',
         approvedAt: Date.now(),
+        approvedBy: getAuth(app).currentUser?.email,
         correctionNotice,
         noticeRecipients: recipients,
         fix: { changeSummary: draft.changeSummary, blocks: draft.blocks, quizQuestions: draft.quizQuestions },

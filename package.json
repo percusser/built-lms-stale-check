@@ -11,10 +11,13 @@
   ],
   "scripts": {
     "check:fixtures": "node shared/scripts/check-fixtures.mjs",
-    "wiki": "node shared/scripts/serve-wiki.mjs"
+    "wiki": "node shared/scripts/serve-wiki.mjs",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-stale-check 'node --test test/firestore.rules.test.mjs'"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
     "esbuild": "^0.28.2",
+    "firebase": "^13.4.0",
     "playwright-core": "^1.65.1"
   }
 }

@@ -8,7 +8,7 @@ settings:
   base:
     SWIFT_VERSION: "6.0"
     MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "6"
+    CURRENT_PROJECT_VERSION: "7"
     DEVELOPMENT_TEAM: ""
 packages:
   Firebase:
@@ -45,6 +45,11 @@ targets:
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_ENTITLEMENTS: StaleCheck/Support/StaleCheck.entitlements
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+      configs:
+        Release:
+          EXCLUDED_SOURCE_FILE_NAMES: appcheck-debug-token.txt
     dependencies:
       - target: ShareExtension
       - package: Firebase

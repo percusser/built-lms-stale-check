@@ -2,7 +2,7 @@ import { stripHtml } from '@stale-check/shared';
 import { block, courseTitle, fact, lessonTitle, propAt, quizQuestion } from './course.js';
 import { createFirestoreBackend } from './data/firestore.js';
 import { createLocalBackend } from './data/local.js';
-import { firebaseApp } from './firebase.js';
+import { firebaseApp, isAdminUser, signInAdmin, signOutUser, watchUser } from './firebase.js';
 import { wordDiff } from './diff.js';
 import { safeHtmlFragment } from './sanitize.js';
 
@@ -30,6 +30,14 @@ const ORIGINS = {
   extension: 'Chrome extension',
   iphone: 'iPhone',
 };
+
+function isWebUrl(value) {
+  try {
+    return ['http:', 'https:'].includes(new URL(value).protocol);
+  } catch {
+    return false;
+  }
+}
 
 function h(tag, props = {}, ...children) {
   const el = document.createElement(tag);
@@ -163,7 +171,7 @@ async function detailView(id) {
         h('dl', { class: 'facts' },
           h('dt', {}, 'Lesson says'), h('dd', {}, flag.oldValue),
           h('dt', {}, 'Source now says'), h('dd', {}, flag.verdict === 'changed' ? flag.newValue : 'Nothing about this'),
-          h('dt', {}, 'Source'), h('dd', {}, flag.sourceUrl ? h('a', { href: flag.sourceUrl, target: '_blank', rel: 'noopener' }, flag.sourceLabel) : flag.sourceLabel),
+          h('dt', {}, 'Source'), h('dd', {}, isWebUrl(flag.sourceUrl) ? h('a', { href: flag.sourceUrl, target: '_blank', rel: 'noopener' }, flag.sourceLabel) : flag.sourceLabel),
           h('dt', {}, 'Found by'), h('dd', {}, `${ORIGINS[flag.origin]}, ${flag.createdBy}, ${date(flag.createdAt)} `, sourcePill(flag.inferenceSource)),
           h('dt', {}, 'Changed on'), h('dd', {}, date(flag.changedAt)),
         ),
@@ -277,10 +285,48 @@ async function route(scroll = true) {
   if (scroll) window.scrollTo(0, 0);
 }
 
-window.addEventListener('hashchange', route);
-route();
-let firstSnapshot = true;
-backend.subscribe?.(() => {
-  if (firstSnapshot) firstSnapshot = false;
-  else if (!location.hash.includes('/fix')) route(false);
+function signInView(user, error) {
+  const wrong = user && !isAdminUser(user);
+  const status = h('p', { class: 'muted', role: 'status' }, error ?? (wrong ? `${user.email} does not have access to this dashboard.` : ''));
+  const button = h('button', {
+    type: 'button',
+    onclick: async () => {
+      button.disabled = true;
+      try {
+        if (wrong) await signOutUser(fbApp);
+        await signInAdmin(fbApp);
+      } catch (err) {
+        if (err?.code !== 'auth/popup-closed-by-user' && err?.code !== 'auth/cancelled-popup-request') status.textContent = 'Sign-in failed. Try again.';
+      } finally {
+        button.disabled = false;
+      }
+    },
+  }, wrong ? 'Use a different Google account' : 'Sign in with Google');
+  return [h('h1', {}, 'Sign in'), h('p', {}, 'Flags, approvals and learner records are visible only to the course owner.'), button, status];
+}
+
+let started = false;
+let stopSubscription;
+
+function start() {
+  if (started) return;
+  started = true;
+  window.addEventListener('hashchange', route);
+  route();
+  let firstSnapshot = true;
+  stopSubscription = backend.subscribe?.(() => {
+    if (firstSnapshot) firstSnapshot = false;
+    else if (!location.hash.includes('/fix')) route(false);
+  });
+}
+
+if (!fbApp) start();
+else watchUser(fbApp, (user) => {
+  if (isAdminUser(user)) return start();
+  if (started) {
+    started = false;
+    stopSubscription?.();
+    window.removeEventListener('hashchange', route);
+  }
+  app.replaceChildren(...signInView(user));
 });

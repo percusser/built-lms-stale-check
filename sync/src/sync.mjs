@@ -158,6 +158,8 @@ async function confirm(question) {
   return /^y(es)?$/i.test(answer.trim());
 }
 
+const ADMIN_EMAIL = 'tyler@builtlms.com';
+
 async function pushFixes() {
   const store = firestore();
   const approved = await store.collection('flags').where('status', '==', 'approved').get();
@@ -169,6 +171,10 @@ async function pushFixes() {
   for (const doc of approved.docs) {
     const flag = doc.data();
     console.log(`\nFlag ${doc.id}: "${flag.oldValue}" → "${flag.newValue}"`);
+    if (flag.approvedBy !== ADMIN_EMAIL) {
+      console.log(`  Skipped: approved by ${flag.approvedBy ?? 'an unknown account'}, not ${ADMIN_EMAIL}.`);
+      continue;
+    }
     let plan;
     try {
       const fix = flag.fix ?? {};
