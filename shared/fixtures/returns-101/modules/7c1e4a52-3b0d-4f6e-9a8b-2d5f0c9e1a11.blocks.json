@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "block_id": "HeadingBlock-l1-heading",
+      "type": "HeadingBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "level": 1,
+        "text": "How we handle returns"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 0
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l1-intro",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>Every return starts with one question: is the customer asking for their money back, or for a different item? Money back is a <strong>refund</strong>. A different item is an <strong>exchange</strong>. If you cannot solve the problem yourself, you <strong>escalate</strong>.</p><p>This course covers all three. Each lesson follows the matching page in the support wiki.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 1
+      }
+    }
+  ],
+  "meta": {
+    "total": 2
+  }
+}

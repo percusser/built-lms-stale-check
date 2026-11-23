@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "properties": {
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "factId": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "newValue": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "changed",
+              "removed"
+            ]
+          }
+        },
+        "required": [
+          "factId",
+          "quote",
+          "newValue",
+          "verdict"
+        ]
+      }
+    }
+  },
+  "required": [
+    "matches"
+  ]
+}

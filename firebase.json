@@ -1,0 +1,25 @@
+{
+  "hosting": {
+    "public": "dashboard/dist",
+    "predeploy": [
+      "npm run build -w dashboard"
+    ],
+    "cleanUrls": true,
+    "headers": [
+      {
+        "source": "/bridge",
+        "headers": [
+          {
+            "key": "Permissions-Policy",
+            "value": "language-model=*"
+          }
+        ]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "database": "(default)",
+    "location": "nam5"
+  }
+}

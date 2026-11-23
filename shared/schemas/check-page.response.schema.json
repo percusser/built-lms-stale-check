@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "quote": {
+      "type": "string"
+    },
+    "newValue": {
+      "type": "string"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "still_true",
+        "changed",
+        "removed"
+      ]
+    }
+  },
+  "required": [
+    "quote",
+    "newValue",
+    "verdict"
+  ]
+}

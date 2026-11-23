@@ -1,0 +1,22 @@
+{
+  "wikiBase": "http://localhost:5050",
+  "blocks": {
+    "HeadingBlock-l2-heading": "http://localhost:5050/refunds.html",
+    "ParagraphBlock-l2-window": "http://localhost:5050/refunds.html",
+    "CalloutBlock-l2-no-receipt": "http://localhost:5050/refunds.html",
+    "ParagraphBlock-l2-payment": "http://localhost:5050/refunds.html",
+    "HeadingBlock-l2-nonreturnable-heading": "http://localhost:5050/refunds.html",
+    "ListBlock-l2-nonreturnable": "http://localhost:5050/refunds.html",
+    "SimpleQuizBlock-l2-quiz": "http://localhost:5050/refunds.html",
+    "HeadingBlock-l3-heading": "http://localhost:5050/exchanges.html",
+    "ParagraphBlock-l3-where": "http://localhost:5050/exchanges.html",
+    "ParagraphBlock-l3-price": "http://localhost:5050/exchanges.html",
+    "CalloutBlock-l3-once": "http://localhost:5050/exchanges.html",
+    "SimpleQuizBlock-l3-quiz": "http://localhost:5050/exchanges.html",
+    "HeadingBlock-l4-heading": "http://localhost:5050/escalation.html",
+    "ParagraphBlock-l4-when": "http://localhost:5050/escalation.html",
+    "ProcessFlowBlock-l4-how": "http://localhost:5050/escalation.html",
+    "KeyTakeawaysBlock-l4-targets": "http://localhost:5050/escalation.html",
+    "SimpleQuizBlock-l4-quiz": "http://localhost:5050/escalation.html"
+  }
+}

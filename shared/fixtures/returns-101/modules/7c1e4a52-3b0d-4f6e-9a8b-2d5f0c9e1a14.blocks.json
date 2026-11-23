@@ -1,0 +1,169 @@
+{
+  "data": [
+    {
+      "block_id": "HeadingBlock-l4-heading",
+      "type": "HeadingBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "level": 2,
+        "text": "Escalating to Tier 2"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 0
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l4-when",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>You own the ticket first. Escalate to <strong>Tier 2 after two failed fixes</strong>: two different troubleshooting steps that did not solve the problem. If the customer reports a safety issue with a product, escalate right away without trying fixes first.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 1
+      }
+    },
+    {
+      "block_id": "ProcessFlowBlock-l4-how",
+      "type": "ProcessFlowBlock",
+      "props": {
+        "widthConstraint": "wide",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "title": "How to escalate",
+        "enableAnimations": true,
+        "animationSpeed": 0.5,
+        "steps": [
+          {
+            "title": "Tag it",
+            "description": "Set the ticket priority and add the tag tier2.",
+            "icon": "🏷️"
+          },
+          {
+            "title": "Write the handoff",
+            "description": "What the customer reported, both fixes you tried, and what happened.",
+            "icon": "📝"
+          },
+          {
+            "title": "Tell the customer",
+            "description": "A specialist will take over, and when they will hear back.",
+            "icon": "💬"
+          }
+        ]
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 2
+      }
+    },
+    {
+      "block_id": "KeyTakeawaysBlock-l4-targets",
+      "type": "KeyTakeawaysBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "intro": "<p>Remember these numbers.</p>",
+        "hook": "",
+        "showIcons": true,
+        "items": [
+          {
+            "icon": "⏱️",
+            "content": "<p>Tier 2 answers a standard escalation within 4 business hours.</p>"
+          },
+          {
+            "icon": "⚠️",
+            "content": "<p>Tier 2 answers a safety escalation within 1 hour, any time of day.</p>"
+          },
+          {
+            "icon": "💵",
+            "content": "<p>Refunds over $500 need a support manager to approve them before they are issued.</p>"
+          }
+        ]
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 3
+      }
+    },
+    {
+      "block_id": "SimpleQuizBlock-l4-quiz",
+      "type": "SimpleQuizBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "title": "Check your knowledge: escalation",
+        "description": "",
+        "questions": [
+          {
+            "id": "q-l4-when",
+            "type": "multiple-choice",
+            "question": "When should you escalate a standard ticket to Tier 2?",
+            "points": 1,
+            "options": [
+              "Right away",
+              "After one failed fix",
+              "After two failed fixes",
+              "After the customer asks twice"
+            ],
+            "correctAnswer": "After two failed fixes"
+          },
+          {
+            "id": "q-l4-refund",
+            "type": "multiple-choice",
+            "question": "A customer is owed a $650 refund. What happens before it is issued?",
+            "points": 1,
+            "options": [
+              "Nothing, issue it",
+              "A support manager approves it",
+              "Tier 2 approves it",
+              "The customer signs a form"
+            ],
+            "correctAnswer": "A support manager approves it"
+          }
+        ],
+        "allowRetakes": true,
+        "showFeedback": true,
+        "randomizeQuestions": false,
+        "passingScore": 80,
+        "presentationMode": "one-by-one",
+        "showFeedbackPerQuestion": true,
+        "quizStyle": {}
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 4
+      }
+    }
+  ],
+  "meta": {
+    "total": 5
+  }
+}

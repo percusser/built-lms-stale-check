@@ -1,0 +1,138 @@
+{
+  "data": [
+    {
+      "block_id": "HeadingBlock-l3-heading",
+      "type": "HeadingBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "level": 2,
+        "text": "Exchanges"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 0
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l3-where",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>Customers can exchange an item <strong>in any store or by mail</strong>. For a mail exchange, email the customer a prepaid return label from the order page.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 1
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l3-price",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>Exchanges follow the same window as refunds. If the new item costs more, the customer pays the difference. If it costs less, refund the difference to the original payment method.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 2
+      }
+    },
+    {
+      "block_id": "CalloutBlock-l3-once",
+      "type": "CalloutBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "variant": "warning",
+        "title": "One exchange per item",
+        "content": "<p>Each purchased item can be exchanged once. Handle a second exchange as a return and a new purchase.</p>",
+        "showIcon": true
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 3
+      }
+    },
+    {
+      "block_id": "SimpleQuizBlock-l3-quiz",
+      "type": "SimpleQuizBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "title": "Check your knowledge: exchanges",
+        "description": "",
+        "questions": [
+          {
+            "id": "q-l3-where",
+            "type": "multiple-choice",
+            "question": "A customer lives two hours from the nearest store and wants a different size. What do you offer?",
+            "points": 1,
+            "options": [
+              "They must visit a store",
+              "A mail exchange with a prepaid return label",
+              "A refund only",
+              "Store credit"
+            ],
+            "correctAnswer": "A mail exchange with a prepaid return label",
+            "feedback": "Customers can exchange in any store or by mail."
+          },
+          {
+            "id": "q-l3-second",
+            "type": "multiple-choice",
+            "question": "A customer wants to exchange a jacket they already exchanged once. What do you do?",
+            "points": 1,
+            "options": [
+              "Exchange it again",
+              "Refuse",
+              "Handle it as a return and a new purchase",
+              "Escalate to Tier 2"
+            ],
+            "correctAnswer": "Handle it as a return and a new purchase"
+          }
+        ],
+        "allowRetakes": true,
+        "showFeedback": true,
+        "randomizeQuestions": false,
+        "passingScore": 80,
+        "presentationMode": "one-by-one",
+        "showFeedbackPerQuestion": true,
+        "quizStyle": {}
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 4
+      }
+    }
+  ],
+  "meta": {
+    "total": 5
+  }
+}

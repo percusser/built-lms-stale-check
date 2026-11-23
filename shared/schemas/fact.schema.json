@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fact.schema.json",
+  "title": "Lesson fact",
+  "description": "One checkable fact a lesson block teaches, tied to the source page it came from. Stored in Firestore at orgs/{orgId}/courses/{courseId}/facts/{factId}.",
+  "type": "object",
+  "required": ["id", "courseId", "moduleId", "blockId", "statement", "value", "sourceUrl", "quizQuestionIds", "keywords", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "courseId": { "type": "string" },
+    "moduleId": { "type": "string" },
+    "blockId": { "type": "string" },
+    "statement": { "type": "string", "description": "The fact as a full sentence, e.g. 'Customers can return most items for a full refund within 30 days of delivery.'" },
+    "value": { "type": "string", "description": "The specific part that could go stale, e.g. '30 days'." },
+    "sourceUrl": { "type": "string" },
+    "quizQuestionIds": { "type": "array", "items": { "type": "string" } },
+    "keywords": { "type": "array", "items": { "type": "string" }, "description": "Lowercase words a message about this fact would likely contain. Used by the phone's prefilter." },
+    "status": { "type": "string", "enum": ["active", "flagged", "fixed"] }
+  }
+}

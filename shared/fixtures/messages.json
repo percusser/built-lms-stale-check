@@ -1,0 +1,9 @@
+{
+  "messages": [
+    { "id": "m-exchanges-in-store", "channel": "slack", "text": "Heads up from Legal: from Dec 1, exchanges are in-store only. We're retiring the prepaid mail label for exchanges.", "expect": [{ "factId": "f-exchange-where", "verdict": "changed" }] },
+    { "id": "m-refund-window-14", "channel": "email", "text": "Team, starting this month the return window for refunds is 14 days from delivery, not 30. Please update your macros.", "expect": [{ "factId": "f-refund-window", "verdict": "changed" }] },
+    { "id": "m-manager-threshold", "channel": "slack", "text": "Ops update: managers now only need to approve refunds over $1,000.", "expect": [{ "factId": "f-refund-manager-approval", "verdict": "changed" }] },
+    { "id": "m-unrelated", "channel": "slack", "text": "Reminder: the holiday party is Friday at 4 in the break room. Bring a snack!", "expect": [] },
+    { "id": "m-mentions-only", "channel": "email", "text": "Quick reminder that refunds still go back to the original payment method. Nothing has changed, just seeing a few mistakes.", "expect": [] }
+  ]
+}

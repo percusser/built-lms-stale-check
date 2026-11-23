@@ -1,0 +1,14 @@
+{
+  "firebase": {
+    "apiKey": "",
+    "authDomain": "",
+    "projectId": "",
+    "appId": ""
+  },
+  "recaptchaSiteKey": "",
+  "bridgeUrl": "https://<project-id>.web.app/bridge",
+  "extensionIds": [
+    "kpbhfkhckgbifepeoaleajacgdcfplfe"
+  ],
+  "appCheckDebugToken": ""
+}

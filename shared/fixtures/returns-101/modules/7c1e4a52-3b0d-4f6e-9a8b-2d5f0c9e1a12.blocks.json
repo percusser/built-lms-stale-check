@@ -1,0 +1,199 @@
+{
+  "data": [
+    {
+      "block_id": "HeadingBlock-l2-heading",
+      "type": "HeadingBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "level": 2,
+        "text": "Refunds"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 0
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l2-window",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>Customers can return most items for a full refund within <strong>30 days</strong> of the delivery date. Ask for proof of purchase: the receipt, the order number, or the card they paid with. The item must be resalable, with its tags attached.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 1
+      }
+    },
+    {
+      "block_id": "CalloutBlock-l2-no-receipt",
+      "type": "CalloutBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "variant": "info",
+        "title": "No proof of purchase?",
+        "content": "<p>Offer store credit for the current selling price instead of a refund.</p>",
+        "showIcon": true
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 2
+      }
+    },
+    {
+      "block_id": "ParagraphBlock-l2-payment",
+      "type": "ParagraphBlock",
+      "props": {
+        "widthConstraint": "narrow",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "text": "<p>Refunds go back to the original payment method. The customer sees the money within <strong>5 to 7 business days</strong> after we receive the item. Original shipping costs are not refunded, unless the item arrived damaged or we sent the wrong item.</p>"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 3
+      }
+    },
+    {
+      "block_id": "HeadingBlock-l2-nonreturnable-heading",
+      "type": "HeadingBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "level": 3,
+        "text": "Items that cannot be returned"
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 4
+      }
+    },
+    {
+      "block_id": "ListBlock-l2-nonreturnable",
+      "type": "ListBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "type": "ul",
+        "items": [
+          {
+            "text": "Gift cards"
+          },
+          {
+            "text": "Custom-cut rope and chain"
+          },
+          {
+            "text": "Opened fuel canisters"
+          }
+        ]
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 5
+      }
+    },
+    {
+      "block_id": "SimpleQuizBlock-l2-quiz",
+      "type": "SimpleQuizBlock",
+      "props": {
+        "widthConstraint": "medium",
+        "padding": {
+          "top": "md",
+          "bottom": "md"
+        },
+        "elementStyles": {},
+        "title": "Check your knowledge: refunds",
+        "description": "",
+        "questions": [
+          {
+            "id": "q-l2-window",
+            "type": "multiple-choice",
+            "question": "A customer wants a refund for boots delivered 20 days ago. What do you tell them?",
+            "points": 1,
+            "options": [
+              "The return window has closed",
+              "They can return the boots for a full refund",
+              "They can get store credit only",
+              "They need a manager to approve it"
+            ],
+            "correctAnswer": "They can return the boots for a full refund",
+            "feedback": "Customers have 30 days from delivery to return most items for a full refund."
+          },
+          {
+            "id": "q-l2-no-receipt",
+            "type": "multiple-choice",
+            "question": "A customer has no receipt, no order number and paid cash. What can you offer?",
+            "points": 1,
+            "options": [
+              "A full cash refund",
+              "Store credit for the current selling price",
+              "Nothing",
+              "An exchange only"
+            ],
+            "correctAnswer": "Store credit for the current selling price"
+          },
+          {
+            "id": "q-l2-timing",
+            "type": "multiple-choice",
+            "question": "How long until a refund reaches the customer after we receive the item?",
+            "points": 1,
+            "options": [
+              "Same day",
+              "1 to 2 business days",
+              "5 to 7 business days",
+              "30 days"
+            ],
+            "correctAnswer": "5 to 7 business days"
+          }
+        ],
+        "allowRetakes": true,
+        "showFeedback": true,
+        "randomizeQuestions": false,
+        "passingScore": 80,
+        "presentationMode": "one-by-one",
+        "showFeedbackPerQuestion": true,
+        "quizStyle": {}
+      },
+      "location": {
+        "parent_block_id": null,
+        "slot": null,
+        "index": 6
+      }
+    }
+  ],
+  "meta": {
+    "total": 7
+  }
+}

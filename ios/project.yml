@@ -1,0 +1,107 @@
+name: StaleCheck
+options:
+  bundleIdPrefix: com.builtlms.stalecheck
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "6"
+    DEVELOPMENT_TEAM: ""
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    exactVersion: 13.2.0
+targets:
+  StaleCheck:
+    type: application
+    platform: iOS
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
+    sources:
+      - StaleCheck
+      - path: ../shared/prompts/check-message.md
+        buildPhase: resources
+      - path: ../shared/fixtures/returns-101/facts.golden.json
+        buildPhase: resources
+      - path: ../shared/fixtures/returns-101/course.json
+        buildPhase: resources
+      - path: StaleCheck/Support/GoogleService-Info.plist
+        buildPhase: resources
+        optional: true
+      - path: StaleCheck/Support/appcheck-debug-token.txt
+        buildPhase: resources
+        optional: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.builtlms.stalecheck
+        PRODUCT_NAME: Stale Check
+        INFOPLIST_KEY_CFBundleDisplayName: Stale Check
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_ENTITLEMENTS: StaleCheck/Support/StaleCheck.entitlements
+    dependencies:
+      - target: ShareExtension
+      - package: Firebase
+        product: FirebaseCore
+      - package: Firebase
+        product: FirebaseAILogic
+      - package: Firebase
+        product: FirebaseAppCheck
+      - package: Firebase
+        product: FirebaseFirestore
+  ShareExtension:
+    type: app-extension
+    platform: iOS
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
+    sources:
+      - ShareExtension
+      - StaleCheck/Model/SharedInbox.swift
+    info:
+      path: ShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Stale Check
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsText: true
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsImageWithMaxCount: 1
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.builtlms.stalecheck.share
+        CODE_SIGN_ENTITLEMENTS: ShareExtension/ShareExtension.entitlements
+  StaleCheckTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - StaleCheckTests
+      - path: ../shared/fixtures/messages.json
+        buildPhase: resources
+    dependencies:
+      - target: StaleCheck
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Stale Check.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Stale Check
+        BUNDLE_LOADER: $(TEST_HOST)
+schemes:
+  StaleCheck:
+    build:
+      targets:
+        StaleCheck: all
+    test:
+      targets:
+        - StaleCheckTests

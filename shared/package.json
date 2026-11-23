@@ -1,0 +1,20 @@
+{
+  "name": "@stale-check/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./src/index.js",
+    "./schemas/*": "./schemas/*",
+    "./prompts/*": "./prompts/*",
+    "./fixtures/*": "./fixtures/*",
+    "./firebase-model": "./src/firebase-model.js"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

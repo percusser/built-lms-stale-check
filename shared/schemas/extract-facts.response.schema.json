@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "blockId": { "type": "string" },
+          "statement": { "type": "string" },
+          "value": { "type": "string" },
+          "keywords": { "type": "array", "items": { "type": "string" } },
+          "quizQuestionIds": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["blockId", "statement", "value", "keywords", "quizQuestionIds"]
+      }
+    }
+  },
+  "required": ["facts"]
+}
