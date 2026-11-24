@@ -111,10 +111,10 @@ async function listView(filter) {
   ];
 }
 
-function lessonBlockView(blockId, propName) {
+function lessonBlockView(blockId, propName, appliedHtml) {
   const b = block(blockId);
   if (!b) return undefined;
-  const html = propName ? propAt(b.props, propName) : undefined;
+  const html = appliedHtml ?? (propName ? propAt(b.props, propName) : undefined);
   return h('div', { class: 'lesson-block' }, h('div', { class: 'muted small' }, b.type.replace(/Block$/, '')), html ? h('div', { class: 'prose' }, safeHtmlFragment(html)) : h('p', {}, stripHtml(JSON.stringify(b.props))));
 }
 
@@ -145,6 +145,7 @@ async function detailView(id) {
   const f = fact(flag.factId);
   const trained = await backend.trainedOnOldVersion(flag);
   const b = block(f.blockId);
+  const applied = flag.status === 'fixed' ? flag.fix : undefined;
 
   const setStatus = async (status) => {
     await backend.setFlagStatus(flag.id, status);
@@ -179,8 +180,12 @@ async function detailView(id) {
       ),
       h('section', { class: 'card' },
         h('h2', {}, 'Where the lesson teaches it'),
-        b ? lessonBlockView(f.blockId, findTextProp(b, flag.oldValue.split(' / ')[0])) : undefined,
-        f.quizQuestionIds.map((qid) => quizQuestion(qid)).filter(Boolean).map((q) => h('div', { class: 'lesson-block' }, h('div', { class: 'muted small' }, 'Quiz question'), questionView(q))),
+        b ? lessonBlockView(f.blockId, findTextProp(b, flag.oldValue.split(' / ')[0]), applied?.blocks?.find((d) => d.blockId === f.blockId)?.html) : undefined,
+        f.quizQuestionIds.map((qid) => {
+          const q = quizQuestion(qid);
+          const fixed = applied?.quizQuestions?.find((x) => x.id === qid);
+          return q && fixed ? { ...q, ...fixed } : q;
+        }).filter(Boolean).map((q) => h('div', { class: 'lesson-block' }, h('div', { class: 'muted small' }, 'Quiz question'), questionView(q))),
       ),
     ),
     h('section', { class: 'card' },
