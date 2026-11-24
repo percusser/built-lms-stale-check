@@ -12,7 +12,7 @@ struct InboxView: View {
                         ContentUnavailableView {
                             Label("Nothing shared yet", systemImage: "square.and.arrow.up")
                         } description: {
-                            Text("Share a Slack message, an email or a screenshot to Stale Check, and it checks it against your training.")
+                            Text("Share a chat message, an email or a screenshot to Stale Check, and it checks it against your training.")
                         } actions: {
                             Button("Paste a message") { showingPaste = true }
                         }

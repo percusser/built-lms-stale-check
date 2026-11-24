@@ -87,6 +87,8 @@ final class AppModel {
                 try await checkInCloud(id, text: text, source: .inCloud, otherwise: "This is too long for the on-device model, and the cloud model is not set up in this build.")
             } catch CheckFailure.modelUnavailable {
                 try await checkInCloud(id, text: text, source: .inCloud, otherwise: "The on-device model is not available, and the cloud model is not set up in this build.")
+            } catch CheckFailure.modelError {
+                try await checkInCloud(id, text: text, source: .inCloud, otherwise: "The on-device model could not check this message, and the cloud model is not set up in this build.")
             }
         } catch CheckFailure.tooLong {
             set(id, .failed("This message is too long to check."))

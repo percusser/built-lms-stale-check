@@ -172,7 +172,7 @@ async function detailView(id) {
           h('dt', {}, 'Lesson says'), h('dd', {}, flag.oldValue),
           h('dt', {}, 'Source now says'), h('dd', {}, flag.verdict === 'changed' ? flag.newValue : 'Nothing about this'),
           h('dt', {}, 'Source'), h('dd', {}, isWebUrl(flag.sourceUrl) ? h('a', { href: flag.sourceUrl, target: '_blank', rel: 'noopener' }, flag.sourceLabel) : flag.sourceLabel),
-          h('dt', {}, 'Found by'), h('dd', {}, `${ORIGINS[flag.origin]}, ${flag.createdBy}, ${date(flag.createdAt)} `, sourcePill(flag.inferenceSource)),
+          h('dt', {}, 'Found by'), h('dd', {}, `${[ORIGINS[flag.origin], flag.createdBy, date(flag.createdAt)].filter(Boolean).join(', ')} `, sourcePill(flag.inferenceSource)),
           h('dt', {}, 'Changed on'), h('dd', {}, date(flag.changedAt)),
         ),
         flag.quote ? h('blockquote', {}, flag.quote) : undefined,
