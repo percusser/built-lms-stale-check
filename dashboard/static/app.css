@@ -117,3 +117,4 @@ textarea { font: inherit; width: 100%; padding: 10px; border-radius: 8px; border
 }
 .error { color: var(--bad-text); margin: 0; }
 .error:empty { display: none; }
+.judge-notice { margin-bottom: 16px; border-left: 4px solid var(--info-text); }

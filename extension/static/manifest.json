@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Built LMS Stale Training Check",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Spots when a page your training was built from changes, and flags the lessons that are now wrong.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApM0wuLKBzyFW5BuF5Nx3zOUzs0kklUt0nc0ah70BSxmmItozRK22QIjkdbImcXQ57/LOA4VucS8877Yzs7cfpv9QkEMR27F0wd7cqMjQ7D/dksUmsZMM1yXT+ieO92GZ9P5LJ7Dosb+swvI8LRs0EGaAvNM1mlBhr9+oXr3dm1jDXlmSP3XCoYZFmTs7dlIWpde/cL5r3EXQPT6Vtu2IgmqR623wMpTvuEMd+qUJmBH5FsMCMKsJBhSRcYF7S+AfgIeveogFBvwPQgcoXrbN5sIeR1ffm6UsF4bt6bwTcdeEuDaHWtQ3yWceUBeKdjnimGUa+KQCLKzgPuLTWW0m4wIDAQAB",
   "minimum_chrome_version": "138",

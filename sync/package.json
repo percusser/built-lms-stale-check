@@ -5,7 +5,8 @@
   "type": "module",
   "license": "Apache-2.0",
   "scripts": {
-    "sync": "node src/sync.mjs"
+    "sync": "node src/sync.mjs",
+    "seed:demo": "node src/seed-demo.mjs"
   },
   "dependencies": {
     "firebase-admin": "^13.0.0"

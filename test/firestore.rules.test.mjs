@@ -60,3 +60,12 @@ test('a source link must be http or https', async () => {
   await assertFails(setDoc(doc(anon(), 'flags/bad'), { ...flag, sourceUrl: 'javascript:alert(1)' }));
   await assertSucceeds(setDoc(doc(anon(), 'flags/good'), { ...flag, sourceUrl: 'https://example.com/returns' }));
 });
+
+test('anyone can read the judge demo data, and nobody can write it', async () => {
+  await env.withSecurityRulesDisabled((ctx) => setDoc(doc(ctx.firestore(), 'demo/larkspur/flags/f1'), flag));
+  await assertSucceeds(getDocs(collection(anon(), 'demo/larkspur/flags')));
+  for (const db of [anon(), stranger(), owner()]) {
+    await assertFails(setDoc(doc(db, 'demo/larkspur/flags/f2'), flag));
+    await assertFails(updateDoc(doc(db, 'demo/larkspur/flags/f1'), { status: 'approved' }));
+  }
+});

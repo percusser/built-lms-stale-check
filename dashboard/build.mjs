@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild';
-import { cp, rm } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { loadFirebaseConfig } from '../shared/scripts/load-config.mjs';
 
 const serve = process.argv.includes('--serve');
@@ -20,6 +20,7 @@ const options = {
 
 await rm(outdir, { recursive: true, force: true });
 await cp('static', outdir, { recursive: true });
+await copyWiki(`${outdir}/wiki`);
 if (serve) {
   const ctx = await context(options);
   await ctx.watch();
@@ -28,4 +29,14 @@ if (serve) {
 } else {
   await build(options);
   console.log(`Built ${outdir}/`);
+}
+
+async function copyWiki(dest) {
+  const src = '../demo-wiki';
+  await mkdir(dest, { recursive: true });
+  await cp(`${src}/assets`, `${dest}/assets`, { recursive: true });
+  for (const page of ['index.html', 'exchanges.html', 'escalation.html']) await cp(`${src}/${page}`, `${dest}/${page}`);
+  const variant = async (name) => (await readFile(`${src}/variants/${name}`, 'utf8')).replaceAll('href="../', 'href="');
+  await writeFile(`${dest}/refunds.html`, await variant('refunds-v2-14-days.html'));
+  await writeFile(`${dest}/refunds-reworded.html`, await variant('refunds-reworded.html'));
 }

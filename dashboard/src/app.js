@@ -1,5 +1,6 @@
 import { stripHtml } from '@stale-check/shared';
 import { block, courseTitle, fact, lessonTitle, propAt, quizQuestion } from './course.js';
+import { createDemoBackend } from './data/demo.js';
 import { createFirestoreBackend } from './data/firestore.js';
 import { createLocalBackend } from './data/local.js';
 import { firebaseApp, isAdminUser, signInAdmin, signOutUser, watchUser } from './firebase.js';
@@ -7,7 +8,9 @@ import { wordDiff } from './diff.js';
 import { safeHtmlFragment } from './sanitize.js';
 
 const fbApp = firebaseApp();
-const backend = fbApp ? createFirestoreBackend(fbApp) : createLocalBackend();
+const judge = /^\/judge\/?$/.test(location.pathname);
+const backend = judge && fbApp ? createDemoBackend(fbApp) : fbApp ? createFirestoreBackend(fbApp) : createLocalBackend();
+const readOnly = Boolean(backend.readOnly);
 const app = document.getElementById('app');
 
 const VERDICTS = {
@@ -79,6 +82,7 @@ async function listView(filter) {
   const tabs = ['open', 'approved', 'fixed', 'dismissed', 'all'];
 
   return [
+    readOnly ? judgeNotice() : undefined,
     h('div', { class: 'page-head' },
       h('h1', {}, 'Flagged training'),
       h('p', { class: 'muted' }, `${courseTitle} for ${backend.org.name.replace(/\.$/, "")}. Facts whose source changed, found by the Chrome extension and the iPhone app.`),
@@ -109,6 +113,14 @@ async function listView(filter) {
         }))
       : h('div', { class: 'empty' }, h('p', {}, filter === 'open' ? 'No open flags. Your training matches its sources.' : 'Nothing here yet.'), filter !== 'all' ? h('a', { href: '#/?status=all' }, 'Show all flags') : undefined),
   ];
+}
+
+function judgeNotice() {
+  return h('section', { class: 'card judge-notice', role: 'note' },
+    h('h2', {}, 'Judge view'),
+    h('p', {}, 'This is a read-only copy of the trainer dashboard with fictional demo data for Larkspur Supply Co. The people, policies and flags are made up. Approving, dismissing and editing are turned off here.'),
+    h('p', { class: 'muted small' }, 'The live dashboard needs the course owner\'s Google sign-in. Flags show which model ran each check: On device or Cloud.'),
+  );
 }
 
 function lessonBlockView(blockId, propName, appliedHtml) {
@@ -146,6 +158,7 @@ async function detailView(id) {
   const trained = await backend.trainedOnOldVersion(flag);
   const b = block(f.blockId);
   const applied = flag.status === 'fixed' ? flag.fix : undefined;
+  const sampleDraft = readOnly && flag.status === 'open' && (await backend.hasDraft(flag.id));
 
   const setStatus = async (status) => {
     await backend.setFlagStatus(flag.id, status);
@@ -159,7 +172,9 @@ async function detailView(id) {
       h('h1', {}, f.statement),
       changeLine(flag),
     ),
-    h('div', { class: 'actions' },
+    readOnly ? h('div', { class: 'actions' },
+      sampleDraft ? h('a', { class: 'button', href: `#/flags/${encodeURIComponent(flag.id)}/fix` }, 'See the sample draft fix') : undefined,
+    ) : h('div', { class: 'actions' },
       flag.status === 'open' ? h('a', { class: 'button', href: `#/flags/${encodeURIComponent(flag.id)}/fix` }, 'Draft fix') : undefined,
       flag.status === 'open' ? h('button', { class: 'secondary', onclick: () => setStatus('dismissed') }, 'Dismiss, the lesson is right') : undefined,
       flag.status === 'dismissed' || flag.status === 'approved' ? h('button', { class: 'secondary', onclick: () => setStatus('open') }, 'Reopen') : undefined,
@@ -217,14 +232,14 @@ async function fixView(id) {
   if (!flag) return [h('p', {}, 'This flag does not exist. '), h('a', { href: '#/' }, 'Back to flags')];
   const f = fact(flag.factId);
   const back = h('a', { class: 'back', href: `#/flags/${encodeURIComponent(flag.id)}` }, '← Back to the flag');
-  app.replaceChildren(back, h('div', { class: 'page-head' }, h('h1', {}, 'Draft fix')), h('p', { class: 'muted', role: 'status' }, 'Gemini is drafting the fix…'));
+  app.replaceChildren(back, h('div', { class: 'page-head' }, h('h1', {}, 'Draft fix')), h('p', { class: 'muted', role: 'status' }, readOnly ? 'Loading the sample draft…' : 'Gemini is drafting the fix…'));
   const out = await backend.draftFix(flag.id);
   if (out.reason) {
     return [back, h('div', { class: 'page-head' }, h('h1', {}, 'Draft fix')), h('div', { class: 'card' }, h('p', {}, out.reason === 'needs_cloud' ? 'Drafting a fix needs the cloud model, which is not connected yet.' : 'The cloud model could not draft a fix. Try again.'), h('a', { href: `#/flags/${encodeURIComponent(flag.id)}` }, 'Back to the flag'))];
   }
   const { draft } = out;
   const trained = await backend.trainedOnOldVersion(flag);
-  const notice = h('textarea', { id: 'notice', rows: '5' });
+  const notice = h('textarea', { id: 'notice', rows: '5', readonly: readOnly });
   notice.value = draft.correctionNotice;
 
   const approveError = h('p', { class: 'error', role: 'alert' });
@@ -271,11 +286,16 @@ async function fixView(id) {
       h('label', { for: 'notice', class: 'muted' }, `Goes to the ${people(trained.length)} who completed ${lessonTitle(flag.moduleId)} before this fix.`),
       notice,
     ),
-    h('div', { class: 'actions' },
-      h('button', { id: 'approve', onclick: approve }, 'Approve fix and correction'),
-      approveError,
-      h('a', { class: 'button secondary', href: `#/flags/${encodeURIComponent(flag.id)}` }, 'Cancel'),
-    ),
+    readOnly
+      ? h('div', { class: 'actions' },
+          h('p', { class: 'muted' }, 'This is a sample draft that Gemini wrote in the cloud. In the live dashboard the trainer approves it here, and the sync script writes it to the lesson in Built LMS.'),
+          h('a', { class: 'button secondary', href: `#/flags/${encodeURIComponent(flag.id)}` }, 'Back to the flag'),
+        )
+      : h('div', { class: 'actions' },
+          h('button', { id: 'approve', onclick: approve }, 'Approve fix and correction'),
+          approveError,
+          h('a', { class: 'button secondary', href: `#/flags/${encodeURIComponent(flag.id)}` }, 'Cancel'),
+        ),
   ];
 }
 
@@ -325,7 +345,7 @@ function start() {
   });
 }
 
-if (!fbApp) start();
+if (!fbApp || readOnly) start();
 else watchUser(fbApp, (user) => {
   if (isAdminUser(user)) return start();
   if (started) {

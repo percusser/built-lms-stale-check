@@ -8,8 +8,18 @@ export function pageKey(url) {
   return `${u.origin}${u.pathname}`;
 }
 
-export function factsForUrl(url) {
+const LOCAL_WIKI = 'http://localhost:5050';
+const WIKI_ALIASES = { '/refunds-reworded': '/refunds' };
+
+function sourceKey(url) {
   const key = pageKey(url);
+  if (!WIKI_BASE || !key.startsWith(`${WIKI_BASE}/`)) return key;
+  const path = key.slice(WIKI_BASE.length).replace(/\.html$/, '');
+  return `${LOCAL_WIKI}${WIKI_ALIASES[path] ?? path}.html`;
+}
+
+export function factsForUrl(url) {
+  const key = sourceKey(url);
   return golden.facts
     .filter((f) => pageKey(f.sourceUrl) === key)
     .map((f) => ({ ...f, courseId: golden.courseId, courseTitle: course.title, lessonTitle: lessonTitles[f.moduleId] ?? '' }));

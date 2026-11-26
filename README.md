@@ -6,6 +6,59 @@ This project catches that moment. When a source that a Built LMS course was buil
 
 It has four parts: a Chrome extension, an iPhone app with a share extension, a web dashboard for the trainer, and a small sync script that connects the dashboard to a Built LMS tenant.
 
+## Try it
+
+All three parts run against our hosted Firebase project with fictional demo data. You do not need to build anything.
+
+### Trainer dashboard (judge view)
+
+Open https://built-lms-stale-check-572e3.web.app/judge. No sign-in is needed.
+
+It is a read-only copy of the trainer dashboard with the fictional Larkspur Supply Co. data: four flags with On device and Cloud badges, the quoted sentence that proves each change, the people who completed the lesson while it taught the old version, and a sample draft fix for the refund window flag. Approving, dismissing and editing are turned off. The live dashboard at https://built-lms-stale-check-572e3.web.app/ needs the course owner's Google sign-in.
+
+### Chrome extension
+
+1. Download `stale-check-extension-v1.0.0.zip` from the [v1.0.0 release](https://github.com/percusser/built-lms-stale-check/releases/tag/v1.0.0) and unzip it.
+2. In Chrome, open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked**, and select the unzipped folder.
+3. Open https://built-lms-stale-check-572e3.web.app/wiki/refunds, the hosted demo wiki. Legal has changed the return window on this page from 30 days to 14 days.
+4. Click the extension's toolbar icon to open the side panel, then click **Check this page**. The side panel flags the refund window lesson and shows the sentence that proves the change, with an On device or Cloud badge.
+5. To see that rewording is not flagged, open https://built-lms-stale-check-572e3.web.app/wiki/refunds-reworded. It says the same policy in different words. The exchanges and escalation pages in the wiki have not changed.
+
+The zip is already set up for our Firebase project. It holds no keys: its cloud calls go through the hosted bridge page, which is protected by App Check. Flags you create go to the project's flag collection, which only the course owner can read.
+
+**Gemini Nano requirements.** On-device checks use Gemini Nano through Chrome's built-in Prompt API. You need:
+
+- Chrome 138 or later on Windows 10 or 11, macOS 13 or later, Linux, or ChromeOS on a Chromebook Plus.
+- At least 22 GB of free space on the drive that holds your Chrome profile.
+- A GPU with more than 4 GB of VRAM, or a CPU with 16 GB of RAM and 4 or more cores.
+- An unmetered network connection for the first download.
+
+The first time you check a page, Chrome downloads Gemini Nano, which is roughly 4 GB. The side panel shows the download progress. If your computer cannot run Gemini Nano, or the download has not finished, the same check runs in the cloud and the result shows a Cloud badge.
+
+### iPhone app
+
+Join the TestFlight beta at https://testflight.apple.com/join/BRnk1s3P. On-device checks need an iPhone with Apple Intelligence turned on (iPhone 15 Pro or later, iOS 26). On other iPhones the check runs in the cloud. Share a Slack message, an email or a screenshot to Stale Check, then open the app to see which lessons it changes.
+
+## Built during the hackathon
+
+Built LMS is our existing corporate learning platform. Everything in this repository was built during #BuildHybridAI, starting November 23, 2026.
+
+**New for the hackathon:**
+
+- The Chrome extension, with on-device fact checks through Gemini Nano and the cloud fallback through Firebase AI Logic.
+- The iPhone app and share extension, with on-device checks through Apple Foundation Models, Vision text recognition and the cloud fallback.
+- The trainer dashboard, the judge view, and the bridge page that gives the extension App Check.
+- The draft-fix flow that rewrites a lesson block and its quiz questions with Gemini.
+- The shared prompts, response schemas and verdict checks that reject a "changed" verdict without a real quote.
+- The sync script that reads completions from Built LMS and writes approved fixes back through its API.
+- The Firestore rules and their tests, the demo wiki, and the Returns 101 sample course.
+
+**Already in Built LMS before the hackathon:**
+
+- The learning platform itself: courses, lessons, lesson blocks, quizzes, enrollments and completion records.
+- The Built LMS API that the sync script calls to read completions and update lesson blocks.
+- AI course generation, which records which source chunks each generated lesson block came from.
+
 ## The hybrid design
 
 The checking is constant, so it runs on the device. The rewriting is rare and needs quality, so it runs in the cloud. Every result carries an On device or Cloud badge so you can see which one ran.
@@ -82,6 +135,8 @@ The wiki runs on `http://localhost:5050`. Opening `http://localhost:5050/__state
 npx firebase deploy --only hosting,firestore:rules --project <your-project-id>
 ```
 
+The judge view at `/judge` reads fictional demo data from the `demo/larkspur` collection, which anyone can read and nobody can write. To fill it in your own project, run `npm run seed:demo --workspace sync`, which copies `dashboard/src/data/sample.js` there with your Google login.
+
 ### 3. Configure the web clients
 
 Copy `firebase-config.example.json` to `firebase-config.local.json` and fill in the web app's config, the reCAPTCHA Enterprise site key, and the bridge URL (`https://<your-project-id>.web.app/bridge`). For local development, register a debug token in the App Check console and put it in `appCheckDebugToken`. This file is ignored by git.
@@ -95,7 +150,7 @@ npm run build --workspace extension
 npm run build --workspace dashboard
 ```
 
-Load `extension/dist` as an unpacked extension in Chrome and open the side panel on a demo wiki page. To watch other sites, add them to `host_permissions` and `content_scripts` in `extension/static/manifest.json`. On-device checks need Chrome 138 or later on a laptop that meets Gemini Nano's hardware requirements; without them, checks go to the cloud.
+Load `extension/dist` as an unpacked extension in Chrome and open the side panel on a demo wiki page. When `bridgeUrl` is set, the build also allows the hosted demo wiki at `https://<your-project-id>.web.app/wiki/`, which the dashboard build copies from `demo-wiki/` with the 14-day refund policy as the current page. To watch other sites, add them to `host_permissions` and `content_scripts` in `extension/static/manifest.json`. On-device checks need Chrome 138 or later on a laptop that meets Gemini Nano's hardware requirements; without them, checks go to the cloud.
 
 ### 5. Build the iPhone app
 

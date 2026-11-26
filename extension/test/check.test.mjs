@@ -10,6 +10,7 @@ const out = join(await mkdtemp(join(tmpdir(), 'stale-check-')), 'bundle.mjs');
 await build({
   stdin: { contents: "export * from './src/check.js'; export { createStandInModel } from './src/models/stand-in.js'; export { factsForUrl } from './src/facts.js';", resolveDir: '.', loader: 'js' },
   outfile: out, bundle: true, format: 'esm', platform: 'node', loader: { '.md': 'text' }, logLevel: 'error',
+  define: { WIKI_BASE: JSON.stringify('https://example.web.app/wiki') },
 });
 const { chunkPage, checkFact, mergeChunkVerdicts, createStandInModel, factsForUrl } = await import(out);
 
@@ -58,4 +59,13 @@ test('a part with no answer from the model does not turn into a flag', () => {
   const merged = mergeChunkVerdicts([{ reason: 'too_long', accepted: false, inferenceSource: 'ON_DEVICE' }]);
   assert.equal(merged.verdict, 'not_checked');
   assert.equal(merged.reason, 'too_long');
+});
+
+test('hosted wiki pages, with or without .html, map to the same lesson facts as the local wiki', () => {
+  const ids = (url) => factsForUrl(url).map((f) => f.id);
+  assert.ok(refundFacts.length > 0);
+  for (const url of ['https://example.web.app/wiki/refunds', 'https://example.web.app/wiki/refunds.html', 'https://example.web.app/wiki/refunds-reworded']) {
+    assert.deepEqual(ids(url), refundFacts.map((f) => f.id));
+  }
+  assert.deepEqual(ids('https://example.web.app/judge'), []);
 });
