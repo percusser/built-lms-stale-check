@@ -288,7 +288,7 @@ async function fixView(id) {
     ),
     readOnly
       ? h('div', { class: 'actions' },
-          h('p', { class: 'muted' }, 'This is a sample draft that Gemini wrote in the cloud. In the live dashboard the trainer approves it here, and the sync script writes it to the lesson in Built LMS.'),
+          h('p', { class: 'muted' }, 'This is a sample draft. In the live dashboard, Draft fix asks Gemini in the cloud to write it, the trainer approves it here, and the sync script writes it to the lesson in Built LMS.'),
           h('a', { class: 'button secondary', href: `#/flags/${encodeURIComponent(flag.id)}` }, 'Back to the flag'),
         )
       : h('div', { class: 'actions' },
