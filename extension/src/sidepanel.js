@@ -22,7 +22,7 @@ const REASONS = {
 };
 
 const params = new URLSearchParams(location.search);
-const state = { tabId: undefined, page: undefined, facts: [], running: false, progress: 0, results: undefined, modelStatus: undefined, downloadProgress: undefined, error: undefined };
+const state = { tabId: undefined, page: undefined, facts: [], running: false, progress: 0, results: undefined, modelStatus: undefined, downloadProgress: undefined, error: undefined, incomplete: undefined };
 const canCheck = (s) => s?.state === 'available' || s?.cloud === true;
 const model = selectModel({
   onDownloadProgress(loaded) {
@@ -76,6 +76,7 @@ async function load() {
   state.tabId = tab?.id;
   state.results = undefined;
   state.error = undefined;
+  state.incomplete = undefined;
   state.facts = tab?.url ? safeFacts(tab.url) : [];
   state.page = undefined;
   if (state.facts.length && tab) {
@@ -110,6 +111,7 @@ async function runCheck() {
   state.progress = 0;
   state.results = [];
   state.error = undefined;
+  state.incomplete = undefined;
   render();
   try {
     if (state.modelStatus?.state !== 'available') {
@@ -123,8 +125,13 @@ async function runCheck() {
       render();
     }
     const checkedAt = Date.now();
-    await update('results', {}, (all) => ({ ...all, [key]: { hash, checkedAt, facts: state.results } }));
-    await update('pages', {}, (all) => ({ ...all, [key]: { ...all[key], url: key, hash, checkedHash: hash, checkedAt } }));
+    const failed = state.results.filter((r) => r.verdict === 'not_checked');
+    if (failed.length) {
+      state.incomplete = { count: failed.length, total: state.results.length, reason: failed[0].reason };
+    } else {
+      await update('results', {}, (all) => ({ ...all, [key]: { hash, checkedAt, facts: state.results } }));
+      await update('pages', {}, (all) => ({ ...all, [key]: { ...all[key], url: key, hash, checkedHash: hash, checkedAt } }));
+    }
     const created = [];
     await update('flags', {}, (all) => {
       const next = { ...all };
@@ -153,8 +160,10 @@ async function runCheck() {
       return next;
     });
     if (created.length) await model.saveFlags?.(created);
-    state.page = { ...state.page, checkedHash: hash, checkedAt };
-    chrome.runtime.sendMessage({ type: 'page-checked', tabId: state.tabId }).catch(() => {});
+    if (!state.incomplete) {
+      state.page = { ...state.page, checkedHash: hash, checkedAt };
+      chrome.runtime.sendMessage({ type: 'page-checked', tabId: state.tabId }).catch(() => {});
+    }
   } catch (err) {
     state.error = err?.message ?? String(err);
   } finally {
@@ -179,9 +188,12 @@ function renderPage() {
     root.append(h('p', {}, 'Reload this page so the extension can read it.'));
     return;
   }
+  const failed = state.incomplete || state.error;
   const status = state.running
     ? pill('info', '…', 'Checking')
-    : state.page.hash === state.page.checkedHash
+    : failed
+      ? pill('bad', '!', 'Check did not finish')
+      : state.page.hash === state.page.checkedHash
       ? pill('ok', '✓', 'Checked, no change since then')
       : state.page.checkedHash
         ? pill('warn', '!', 'Page changed since last check')
@@ -189,8 +201,9 @@ function renderPage() {
   root.append(...[
     h('div', { class: 'row' }, status, state.page.checkedAt ? h('span', { class: 'muted' }, `Last checked ${new Date(state.page.checkedAt).toLocaleString()}`) : undefined),
     state.running ? h('div', { class: 'progress', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': '100', 'aria-valuenow': String(Math.round(state.progress * 100)) }, h('div', { style: `transform: scaleX(${state.progress})` })) : undefined,
-    h('div', { class: 'row' }, h('button', { id: 'check', disabled: state.running || (state.modelStatus?.state === 'unavailable' && !canCheck(state.modelStatus)), onclick: runCheck }, state.running ? 'Checking…' : state.page.checkedHash ? 'Check again' : 'Check this page')),
-    state.error ? h('p', { class: 'pill bad', role: 'alert' }, state.error) : undefined,
+    h('div', { class: 'row' }, h('button', { id: 'check', disabled: state.running || (state.modelStatus?.state === 'unavailable' && !canCheck(state.modelStatus)), onclick: runCheck }, state.running ? 'Checking…' : failed ? 'Try again' : state.page.checkedHash ? 'Check again' : 'Check this page')),
+    state.incomplete ? h('p', { class: 'alert', role: 'alert' }, `${state.incomplete.count} of ${state.incomplete.total} facts could not be checked. ${REASONS[state.incomplete.reason] ?? REASONS.model_error} The page is not marked as checked.`) : undefined,
+    state.error ? h('p', { class: 'alert', role: 'alert' }, state.error) : undefined,
   ].filter(Boolean));
 }
 

@@ -62,7 +62,18 @@ try {
   await panel.waitForSelector('[data-fact]');
   assert.equal(await panel.$$eval('#flags [data-flag]', (els) => els.length), 1, 'rechecking the same page must not add a second flag');
 
-  console.log('e2e passed: v1 all still true, v2 flags only the refund window, badge cleared, no duplicate flag');
+  await setState('reworded');
+  await wikiPage.reload();
+  await panel.goto(panelUrl.replace('model=stand-in', 'model=stand-in-fail'));
+  await panel.waitForSelector('text=Check did not finish');
+  assert.doesNotMatch(await panel.textContent('#page'), /no change since then/);
+  assert.match(await panel.textContent('#page'), /could not be checked/);
+  assert.equal(await panel.textContent('#check'), 'Try again');
+  const failedBadge = await worker.evaluate((id) => chrome.action.getBadgeText({ tabId: id }), tabId);
+  assert.equal(failedBadge, '!', 'a failed check must leave the page marked as needing a check');
+  await panel.screenshot({ path: join(shots, 'extension-failed.png'), fullPage: true });
+
+  console.log('e2e passed: v1 all still true, v2 flags only the refund window, badge cleared, no duplicate flag, failed check is not reported as checked');
 } finally {
   await setState('v1').catch(() => {});
   await context.close();

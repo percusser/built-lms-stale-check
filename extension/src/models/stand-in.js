@@ -4,7 +4,7 @@ function sentences(text) {
   return text.split(/(?<=[.!?])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
 }
 
-export function createStandInModel() {
+export function createStandInModel({ fail = false } = {}) {
   return {
     id: 'stand-in',
     label: 'Test stand-in',
@@ -13,6 +13,7 @@ export function createStandInModel() {
     },
     async prepare() {},
     async generate({ meta: { fact, pageText } }) {
+      if (fail) return { reason: 'needs_cloud', inferenceSource: 'IN_CLOUD' };
       const all = sentences(pageText);
       const holding = all.find((s) => normalizeForMatch(s).includes(normalizeForMatch(fact.value)));
       if (holding) return { result: { quote: holding, newValue: '', verdict: 'still_true' }, inferenceSource: 'ON_DEVICE' };
